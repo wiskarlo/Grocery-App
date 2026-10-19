@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Global Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Navigation Panel -->
+    <section class="navigation-panel">
+        <nav>
+            <h1 class="nav-title">Grocery List</h1>
+            <a href="about.html">
+                <button class="tab-btn-about">
+                    <h3><b>About</b></h3>
+                </button>
+            </a>
+        </nav>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Grocery List Options -->
+    <section class="grocery-list-option">
+        <div class="tab-btn-option">
+            <button class="tab-btn active" onclick="switchTab('tab-planned', this)">Planner</button>
+            <button class="tab-btn" onclick="switchTab('tab-bought', this)">Checkout</button>        
+        </div>
+    </section>
+
+    <!-- Planner Section -->
+    <div id="tab-planned" class="tab-content active">
+        <section class="user-input">
+            <div class="add-container">
+                <h4 class="form-btn">Add Item/s:</h4>
+                <form id="add-item-form" class="form-group" onsubmit="handleAddPlannedItem(event)">
+                    <input placeholder="Name" type="text" name="name" class="input" required>
+                    <input placeholder="Quantity" type="number" name="quantity" class="input" min="1" required>
+                    <button type="submit" class="btn-primary"><b>Add</b></button>
+                </form>
+            </div>
+        </section> 
+
+        <section class="grocery-list">
+            <div class="table-container">
+                <table class="grocery-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Action</th> 
+                        </tr>
+                    </thead>
+                    <tbody id="grocery-list"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="total-grocery-section">
+            <div class="bottom-popup" id="bottomPopupPlanner">
+                <p><b>Total Items:</b> <b id="totalItems">0</b></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Checkout Section -->
+    <div id="tab-bought" class="tab-content">
+        <section class="table-container">
+            <table class="checkout-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Action</th> 
+                    </tr>
+                </thead>
+                <tbody id="checkout-list"></tbody>
+            </table>
+        </section>
+
+        <section class="total-price-section">
+            <div class="bottom-popup" id="bottomPopupCheckout">
+                <p><b>Total Price:</b> <span id="totalPrice"><b>₱0.00</b></span></p>
+            </div>
+        </section>
+    </div>    
+
+    <dialog id="popupModal">
+        <form id="price-modal-form" method="dialog" onsubmit="handleModalSubmit(event)">
+            <h3>Buy Item</h3>
+            <p id="modal-item-name" class="modal-subtitle">Enter price for item</p>
+
+            <input type="hidden" id="modal-item-id">
+
+            <div class="form-group vertical">
+                <input type="number" id="modal-price-input" placeholder="Enter price (₱)" step="0.01" min="0" required autofocus>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closePopup()">Cancel</button>
+                <button type="submit" class="btn-primary">Confirm</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="deleteModal" class="receipt-modal">
+        <form id="delete-modal-form" method="dialog" onsubmit="handleDeleteModalSubmit(event)">
+            <h3>Confirm Deletion</h3>
+            <p id="delete-modal-text" class="modal-subtitle">Are you sure you want to remove this item?</p>
+
+            <input type="hidden" id="delete-item-source">
+            <input type="hidden" id="delete-item-id">
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeDeletePopup()">Cancel</button>
+                <button type="submit" class="btn-primary btn-danger">Delete</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="function.js"></script>
+</body>
+</html>
